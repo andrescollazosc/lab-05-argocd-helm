@@ -38,12 +38,12 @@ spec:
           - name: PASSWORD
             valueFrom: 
               secretKeyRef: 
-                name: credentials
+                name: my-secrets
                 key: password
           - name: PASSWORD_DB
             valueFrom: 
               secretKeyRef: 
-                name: credentials
+                name: my-secrets
                 key: password_db
 
           ports:
