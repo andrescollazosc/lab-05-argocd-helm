@@ -1,6 +1,6 @@
 FROM argoproj/argocd:v1.8.7
 
-ARG SOPS_VERSION="v3.8.1"
+ARG SOPS_VERSION="v3.6.1"
 ARG HELM_SECRETS_VERSION="2.0.2"
 ARG HELM_GCS_VERSION="0.3.7"
 ARG SOPS_PGP_FP="56A6229CEAF2C1FA855C3C90B52D05A203060B58"
@@ -27,8 +27,7 @@ RUN apt-get update && \
     chmod +x helm helm2
 
 # helm secrets plugin should be installed as user argocd or it won't be found
-# USER argocd
-RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets
-# RUN /usr/local/bin/helm.bin plugin install https://github.com/zendesk/helm-secrets --version ${HELM_SECRETS_VERSION}
+USER argocd
+RUN /usr/local/bin/helm.bin plugin install https://github.com/zendesk/helm-secrets --version ${HELM_SECRETS_VERSION}
 RUN /usr/local/bin/helm.bin plugin install https://github.com/hayorov/helm-gcs.git --version ${HELM_GCS_VERSION}
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"
