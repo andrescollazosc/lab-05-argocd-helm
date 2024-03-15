@@ -27,7 +27,7 @@ RUN apt-get update && \
     chmod +x helm helm2
 
 # helm secrets plugin should be installed as user argocd or it won't be found
-USER argocd
+USER admin
 RUN /usr/local/bin/helm.bin plugin install https://github.com/zendesk/helm-secrets --version ${HELM_SECRETS_VERSION}
 RUN /usr/local/bin/helm.bin plugin install https://github.com/hayorov/helm-gcs.git --version ${HELM_GCS_VERSION}
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"

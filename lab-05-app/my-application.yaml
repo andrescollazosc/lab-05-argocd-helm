@@ -1,21 +1,45 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: local-lab
-spec:
-  destination:
-    name: ''
-    namespace: default
-    server: 'https://kubernetes.default.svc'
-  source:
-    path: lab-05-app
-    repoURL: 'https://github.com/andrescollazosc/lab-05-argocd-helm'
-    targetRevision: HEAD
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: local-lab
+# spec:
+#   destination:
+#     name: ''
+#     namespace: default
+#     server: 'https://kubernetes.default.svc'
+#   source:
+#     path: lab-05-app
+#     repoURL: 'https://github.com/andrescollazosc/lab-05-argocd-helm'
+#     targetRevision: HEAD
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#         # - secrets.yaml
+#   sources: []
+#   project: default
+#   syncPolicy:
+#     automated: null
+
+
+apiVersion:  argoproj.io/v1alpha1
+kind:  Application
+metadata:  
+  name:  local-lab 
+  namespace:  argocd
+spec:  
+  project:  default
+  source:  
+    repoURL: https://github.com/andrescollazosc/lab-05-argocd-helm   
+    targetRevision:  HEAD
+    path:  lab-05-app
     helm:
+      releaseName: testapp
       valueFiles:
-        - values.yaml
         - secrets.yaml
-  sources: []
-  project: default
+  destination:  
+    server:  https://kubernetes.default.svc
+    namespace:  testapp
   syncPolicy:
-    automated: null
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
