@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-repo-server-config
+  namespace: argocd
+repoServer:
+  env:
+    - name: HELM_SECRETS_LOAD_GPG_KEYS # For GPG
+      # Multiple keys can be separated by space
+      value: /helm-secrets-private-keys/key.asc
+    - name: SOPS_AGE_KEY_FILE # For age
+      value: /helm/secrets-private-keys/key.txt
+  volumes:
+    - name: helm-secrets-private-keys
+      secret:
+        secretName: helm-secrets-private-keys
+  volumeMounts:
+    - mountPath: /helm-secrets-private-keys/
+      name: helm-secrets-private-keys

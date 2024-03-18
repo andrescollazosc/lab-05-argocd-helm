@@ -35,8 +35,15 @@ spec:
     helm:
       releaseName: testapp
       valueFiles:
-        - secrets.yaml
+        # - secrets.yaml
         - values.yaml
+        - secrets://secrets.yaml
+
+        # Method 2: Dynamically reference the gpg key inside values file
+        # secrets+gpg-import://<key-volume-mount>/<key-name>.asc?<relative/path/to/the/encrypted/secrets.yaml>
+        # secrets+age-import://<key-volume-mount>/<key-name>.txt?<relative/path/to/the/encrypted/secrets.yaml>
+        # Example Method 2: (Assumptions: key-volume-mount=/helm-secrets-private-keys, key-name=app, secret.yaml is in the root folder)
+        - secrets+gpg-import:///helm-secrets-private-keys/poc-key.asc?secrets.yaml
   destination:  
     server:  https://kubernetes.default.svc
     namespace:  testapp
